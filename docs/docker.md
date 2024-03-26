@@ -7,6 +7,15 @@ Docker 备忘清单
 ----
 <!--rehype:body-class=cols-2-->
 
+### 安装
+
+```shell
+curl -sSL https://get.docker.com/ | sh
+```
+```shell
+sudo chmod 777 /var/run/docker.sock
+```
+
 ### 入门
 
 在后台创建和运行容器
@@ -303,6 +312,11 @@ $ docker push eon01/nginx localhost:5000/myadmin/nginx
 `docker stop -f $(docker ps -a -q)` | 停止所有容器
 `docker rm -f $(docker ps -a -q)` | 删除所有容器
 `docker rmi -f $(docker images -q)` | 删除所有镜像
+`docker volume prune` | 删除所有未使用的Docker Volume
+`docker network prune` | 删除所有未使用的Docker网络
+`docker system prune` | 清理所有空闲或与任何Docker容器无关的资源
+`docker image prune` | 删除悬空的Docker镜像
+`docker container prune` | 删除所有未使用的Docker 容器
 
 ### 卷 volume
 
@@ -686,3 +700,4 @@ $ docker run -d --name gitlab \
 - [Dockerfile 备忘清单](./dockerfile.md) *(github.io)*
 - [Docker 官方入门教程](https://docs.docker.com/get-started/) *(docker.com)*
 - [Docker入门学习笔记](https://jaywcjlove.github.io/docker-tutorial) *(github.io)*
+- [快速安装Docker及配置及Docker配置、Docker常用命令](https://www.loganjin.cn/article/docker-install/)
