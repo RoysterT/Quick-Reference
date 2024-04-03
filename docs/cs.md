@@ -1,3 +1,4 @@
+
 C# 备忘清单
 ===
 
@@ -67,7 +68,23 @@ Console.WriteLine(name); // => John Doe
 
 查看: [C#字符串](#c-字符串)
 
+### 注释
+
+```cs
+// 单行注释
+
+/* 
+ * 多行
+ * 注释 - 用于文档 
+ */
+
+// TODO：
+// 向IDE中的任务列表添加注释（VS、Rider都支持）
+/// XML 单行注释，用于文档
+```
+
 ### 用户输入
+<!--rehype:wrap-class=col-span-2-->
 
 ```cs showLineNumbers
 Console.WriteLine("Enter number:");
@@ -75,6 +92,19 @@ if(int.TryParse(Console.ReadLine(),out int input))
 {
   // 输入验证
   Console.WriteLine($"You entered {input}");
+}
+```
+
+### 条件判断
+
+```cs
+int j = 10;
+if (j == 10) {
+  Console.WriteLine("I get printed");
+} else if (j > 10) {
+  Console.WriteLine("I don't");
+} else {
+  Console.WriteLine("I also don't");
 }
 ```
 
@@ -94,47 +124,8 @@ var str = "999";
 var bo = false;
 ```
 
-### 注释
-
-```cs
-// 单行注释
-
-/* 
- * 多行
- * 注释 - 用于文档 
- */
-
-// TODO：
-// 向IDE中的任务列表添加注释（VS、Rider都支持）
-/// XML 单行注释，用于文档
-```
-
-### 条件判断
-
-```cs
-int j = 10;
-if (j == 10) {
-  Console.WriteLine("I get printed");
-} else if (j > 10) {
-  Console.WriteLine("I don't");
-} else {
-  Console.WriteLine("I also don't");
-}
-```
-
-### 数组
-
-```cs
-char[] chars = new char[10];
-chars[0] = 'a';
-chars[1] = 'b';
-string[] letters = {"A", "B", "C"};
-int[] mylist = {100, 200};
-bool[] answers = {true, false};
-```
-
 ### 循环
-<!--rehype:wrap-class=col-span-2-->
+<!--rehype:wrap-class=col-span-2 row-span-2-->
 
 ```cs
 int[] numbers = {1, 2, 3, 4, 5};
@@ -167,6 +158,17 @@ do
 {
    Console.WriteLine("与 while 类似，do...while 会确保至少执行一次循环。");
 } while( true );
+```
+
+### 数组
+
+```cs
+char[] chars = new char[10];
+chars[0] = 'a';
+chars[1] = 'b';
+string[] letters = {"A", "B", "C"};
+int[] mylist = {100, 200};
+bool[] answers = {true, false};
 ```
 
 C# 数据类型
@@ -527,6 +529,536 @@ Console.WriteLine(b);
 // 输出:
 // 计算第二个操作数
 // True
+```
+
+类
+---
+
+### 成员变量
+
+```cs
+public class MyClass
+{
+    // 私有变量
+    private int myVariable;
+    // 公有属性
+    public string MyProperty { get; set; }
+}
+```
+
+### 静态成员
+
+```cs
+public class MyClass
+{
+    public static int StaticVariable = 10;
+    public static void StaticMethod()
+    {
+        // 静态方法体
+    }
+}
+```
+
+### 构造函数
+<!--rehype:wrap-class=row-span-2-->
+
+```cs
+public class MyClass
+{
+    // 默认构造函数
+    public MyClass() 
+    {
+        // 初始化代码
+    }
+
+    // 自定义构造函数
+    public MyClass(int value) 
+    {
+        // 使用传入的值初始化
+    }
+
+    // 析构函数
+    ~MyClass() {
+        // Destructor body.
+    }
+
+}
+```
+
+### 方法
+
+```cs
+public class MyClass
+{
+    // 无返回值方法
+    public void MyMethod()
+    {
+        // 方法体
+    }
+    // 有返回值方法
+    public int Add(int a, int b)
+    {
+        return a + b;
+    }
+}
+```
+
+### 属性
+
+```cs
+public class MyClass
+{
+    private string myField;
+    
+    public string MyProperty
+    {
+        get { return myField; }
+        set { myField = value; }
+    }
+}
+```
+
+### 接口
+
+```cs
+public interface IMyInterface
+{
+    void MyMethod(); // 接口方法声明
+}
+
+public class MyClass : IMyInterface
+{
+    public void MyMethod() // 实现接口方法
+    {
+        // 实现代码
+    }
+}
+```
+
+### 继承
+<!--rehype:wrap-class=row-span-3-->
+
+注意
+
+- 在类定义中，只能有一个基类
+- 继承了一个抽象类，必须实现所继承的所有抽象成员(除非派生类也是抽象的)
+- 编译器不允许派生类的可访问性高于基类
+- 内部类可以继承于一个公共基类，但公共类不能继承于一个内部基类
+
+因此，下述代码是合法的：
+
+```cs
+public class MyBase
+{
+    // Class members.
+}
+internal class MyClass : MyBase
+{
+    // Class members.
+}
+```
+
+下述代码不能编译:
+
+```cs
+internal class MyBase
+{
+    // Class members.
+}
+public class MyClass : MyBase
+{
+    // Class members.
+}
+```
+
+如果没有使用基类，被定义的类就只继承于基类 System.Object(它在 C# 中的别名是 object)。在继承层次结构中，所有类的根都是 `System.Object`
+
+### 访问修饰符
+<!--rehype:wrap-class=row-span-2-->
+
+:-- | :--
+:-- | :--
+`public` | 公有，可从任何位置访问
+`private` | 私有，只能在当前类中访问
+`protected` | 受保护，只能在当前类和派生类中访问
+`internal` | 内部，只能在同一程序集中访问
+`protected internal` | 受保护的内部，可以在同一程序集中的任何地方访问，以及派生类中
+`private protected` | 私有保护，只能在同一程序集中的派生类中访问
+<!--rehype:className=style-list-->
+
+### 字段的特殊修饰符
+
+| :--      | :--                                                          |
+| -------- | ------------------------------------------------------------ |
+| `readonly` | 表示这个字段只能在执行构造函数的过程中赋值，或由初始化赋值语句赋值 |
+| `static`   | 静态字段，必须通过类名来访问，例如：Class.staticField        |
+| `const`    | 常量字段，但同时也是静态字段，自带static                     |
+<!--rehype:className=left-align-->
+
+### 方法的特殊修饰符
+<!--rehype:wrap-class=row-span-2-->
+
+| :--      | :--                                                          |
+| -------- | ------------------------------------------------------------ |
+| `static`   | 静态方法，只能通过类名来调用方法                             |
+| `virtual`  | 方法可以被重写                                               |
+| `abstract` | 抽象方法，只用于抽象类                                       |
+| `override` | 方法重写了基类的一个方法（如果方法被重写，就必须使用该关键字）。 |
+| `extern`   | 方法定义放在其他地方，可以在项目外部提供方法的实际实现代码   |
+| `sealed`   | 如果使用了 `override` ，也可以使用 `sealed` 来指定在派生类中不能再对这个方法进行进一步的修改，即这个方法不能被派生类重写 |
+<!--rehype:className=left-align-->
+
+### 公共类
+
+```cs
+public class MyClass
+{
+  ...
+}
+```
+
+添加 `public` 声明为公共类
+
+### 私有类
+
+```cs
+private class MyClass
+{
+  ...
+}
+```
+
+添加 `public` 声明为公共类
+
+### 命名约定
+
+- 类名使用 PascalCase 格式
+- 成员变量和方法名使用 camelCase 格式
+- 公有成员和类型名应该使用有意义的名字
+
+### 默认情况(默认情况即为内部类)
+
+```cs
+class MyClass 
+{
+  ...
+}
+internal class MyCalss
+{
+  ...
+}
+```
+
+上面两个类相同，声明为内部（`internal`）类，只能在当前项目中的代码才能访问它
+
+---
+
+- 抽象类与密封类为互斥关系
+- 抽象类不能实例化，允许继承
+- 可以有抽象成员，密封类不允许继承
+- 都可以声明为公共类（public）和内部类（internal）
+
+### 抽象类与密封类
+
+#### 抽象类（abstract）
+
+```cs
+public abstract class MyClass
+{
+  // 普通公共字段
+  public string id;
+  // 抽象字段
+  public abstract string Name { get; }
+  // 常量字段
+  public const string Description = "常量";
+  // 静态字段
+  public static string Order = "静态";
+}
+```
+
+#### 密封类（sealed
+
+```cs
+public sealed class MyClass
+{
+  ...
+}
+```
+
+## 元组
+
+### 基本使用
+
+不带名称的基本元组创建
+
+```cs
+(
+    int item1,
+    string item2,
+    bool item3
+) tuple1 = (1, "Hello", true);
+
+Console.WriteLine(
+    $"Item1: {tuple1.Item1}, " +
+    $"Item2: {tuple1.Item2}, " +
+    $"Item3: {tuple1.Item3}"
+);
+```
+
+带名称的元组创建（C# 7.0及以上版本）
+
+```cs
+(
+    string FirstName,
+    string LastName,
+    int Age
+) person = ("Alice", "Smith", 30);
+
+Console.WriteLine(
+    $"First Name: {person.FirstName}, " +
+    $"Last Name: {person.LastName}, " +
+    $"Age: {person.Age}"
+);
+```
+
+### 方法调用与接收
+
+```cs
+public (int Id, string Name, double Score) GetStudentInfo()
+{
+    return (123, "John Doe", 95.5);
+}
+```
+
+使用
+
+```cs
+(
+    var id,
+    var name,
+    var score
+) = GetStudentInfo();
+
+Console.WriteLine(
+    $"Id: {id}, " +
+    $"Name: {name}, " +
+    $"Score: {score}"
+);
+```
+
+### 类中使用元组
+
+```cs
+public class Student
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public double GPA { get; set; }
+
+    public void Deconstruct(out int id, out string name, out double gpa)
+    {
+        id = this.Id;
+        name = this.Name;
+        gpa = this.GPA;
+    }
+}
+```
+
+使用Deconstruct方法创建元组
+
+```cs
+Student student = new Student
+{
+    Id = 1,
+    Name = "Jane",
+    GPA = 3.8
+};
+
+(int id, string name, double gpa) = student;
+Console.WriteLine($"Student Id: {id}, Name: {name}, GPA: {gpa}");
+```
+
+## 集合
+
+### c#集合
+
+| 集合                                                         | 有序 | 已排序 | 线程安全 | 允许空值 |
+| :----------------------------------------------------------- | :--- | :----- | :------- | :------- |
+| [List](https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1) | Y    | *N*    | *N*      | 是       |
+| [ArrayList](https://docs.microsoft.com/dotnet/api/system.collections.arraylist) (非泛型) | Y    | *N*    | *N*      | 是       |
+| [Vector](https://docs.microsoft.com/dotnet/api/system.collections.vector) (非泛型) | N    | *N*    | Y        | 是       |
+| [LinkedList](https://docs.microsoft.com/dotnet/api/system.collections.generic.linkedlist-1) | Y    | *N*    | *N*      | 是       |
+| [ConcurrentBag](https://docs.microsoft.com/dotnet/api/system.collections.concurrent.concurrentbag-1) | *N*  | *N*    | Y        | 是       |
+| [HashSet](https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1) | *N*  | *N*    | *N*      | 是       |
+| [SortedSet](https://docs.microsoft.com/dotnet/api/system.collections.generic.sortedset-1) | Y    | Y      | *N*      | 是       |
+| [ConcurrentDictionary](https://docs.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2) | Y    | *N*    | Y        | 是       |
+| [Dictionary](https://docs.microsoft.com/dotnet/api/system.collections.generic.dictionary-2) | *N*  | *N*    | *N*      | 是       |
+| [SortedDictionary](https://docs.microsoft.com/dotnet/api/system.collections.generic.sorteddictionary-2) | Y    | Y      | *N*      | 是       |
+| [Stack](https://docs.microsoft.com/dotnet/api/system.collections.generic.stack-1) | *N*  | *N*    | *N*      | 是       |
+| [Queue](https://docs.microsoft.com/dotnet/api/system.collections.generic.queue-1) | *N*  | *N*    | *N*      | 是       |
+| [ConcurrentQueue](https://docs.microsoft.com/dotnet/api/system.collections.concurrent.concurrentqueue-1) | *N*  | *N*    | Y        | 是       |
+| [ConcurrentStack](https://docs.microsoft.com/dotnet/api/system.collections.concurrent.concurrentstack-1) | *N*  | *N*    | Y        | 是       |
+| [HashTable](https://learn.microsoft.com/zh-cn/dotnet/api/system.collections.hashtable?view=net-6.0) | N    | Y      | Y        | 否       |
+
+### List
+
+```cs
+// 创建一个整数类型的List
+List<int> numbers = new List<int>();
+
+// 增加（Add）
+numbers.Add(10);
+numbers.Add(20);
+//增加30，40两个元素
+numbers.AddRange(new[] { 30, 40 });
+
+// 删除（Remove）
+if (numbers.Contains(20))
+{
+    numbers.Remove(20);
+}
+
+// 修改（更改特定索引处的元素）
+numbers[0] = 50; // 直接替换元素
+
+// 查询（Find/Contains）
+bool isPresent = numbers.Contains(50);
+
+// 查找索引
+int index = numbers.IndexOf(40);
+if (index != -1)
+{
+    numbers[index] = 45; // 修改找到的元素
+}
+```
+
+### HashSet
+
+```cs
+// 创建一个字符串类型的HashSet
+HashSet<string> words = new HashSet<string> { "apple", "banana" };
+
+// 增加（Add）
+words.Add("cherry");
+
+// 返回 false，因为"apple"已存在
+bool wasAdded = words.Add("apple"); 
+
+// 删除（Remove）
+words.Remove("banana");
+
+// 修改 - HashSet不允许直接修改元素
+// 需删除后重新添加
+if (words.Contains("cherry"))
+{
+    words.Remove("cherry");
+    words.Add("cherries");
+}
+
+// 查询（Contains）
+bool containsCherries = words.Contains("cherries");
+```
+<!--rehype:className=wrap-text-->
+
+### ConcurrentBag
+
+```cs
+// 创建一个并发安全的整数集合
+ConcurrentBag<int> concurrentNumbers = new ConcurrentBag<int>();
+
+// 增加（Add）
+concurrentNumbers.Add(1);
+concurrentNumbers.Add(2);
+
+// 删除（由于ConcurrentBag没有直接的Remove方法，只能通过迭代并尝试移除）
+foreach (var number in concurrentNumbers.ToArray())
+{
+    concurrentNumbers.TryTake(out _number); // 并发安全地移除一个元素
+}
+
+// 修改（无法直接修改，同样需先移除再添加，但由于并发特性，不能保证一定能修改目标元素）
+// 在并发环境下尤其复杂，此处省略示例
+
+// 查询（Contains）
+bool hasOne = concurrentNumbers.Contains(1);
+```
+
+### Dictionary
+
+```cs
+// 创建一个键值对字典
+Dictionary<string, int> scores = new Dictionary<string, int>
+{
+    { "Alice", 85 },
+    { "Bob", 90 }
+};
+
+// 增加（Add）
+scores.Add("Charlie", 88);
+
+// 删除（Remove）
+scores.Remove("Bob");
+
+// 修改（Update）
+if (scores.ContainsKey("Alice"))
+{
+    scores["Alice"] = 90; // 直接替换值
+}
+
+// 查询（ContainsKey / GetValueOrDefault）
+bool aliceExists = scores.ContainsKey("Alice");
+int charlieScore = scores.GetValueOrDefault("Charlie", 0);
+```
+
+### Stack
+
+```cs
+// 创建一个整数栈
+Stack<int> stack = new Stack<int>();
+stack.Push(1);
+stack.Push(2);
+
+// 增加（Push）
+stack.Push(3);
+
+// 删除（Pop）并返回栈顶元素
+int topNumber = stack.Pop();
+
+// 修改（Stack不支持直接修改元素，需先Pop再Push）
+int poppedValue = stack.Pop();
+// 替换刚弹出的值
+stack.Push(poppedValue * 2); 
+
+// 查询（Peek / Contains） 但不移除栈顶元素
+int peekedValue = stack.Peek();
+bool hasTwo = stack.Contains(2);
+```
+
+### Hashtable
+
+```cs
+// 创建一个哈希表
+Hashtable hashTable = new Hashtable();
+hashTable.Add("key1", "value1");
+hashTable.Add("key2", "value2");
+
+// 增加（Add）
+hashTable.Add("key3", "value3");
+
+// 删除（Remove）
+hashTable.Remove("key1");
+
+// 修改（Replace）
+object oldValue;
+if (hashTable.ContainsKey("key2"))
+{
+    oldValue = hashTable["key2"];
+    hashTable["key2"] = "new_value2";
+}
+
+// 查询（Contains / GetValue）
+bool hasKey2 = hashTable.ContainsKey("key2");
+string valueOfKey2 = (string)hashTable["key2"];
 ```
 
 杂项
